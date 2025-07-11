@@ -1,12 +1,12 @@
 ---
-title: linux权限相关内容详细介绍
+title: linux普通权限相关内容详细介绍
 top: true
 cover: false
 toc: true
 mathjax: true
 date: 2025-07-07 21:17:35
 password:
-summary: 介绍linux权限相关的内容，加强自身对linux权限的理解。
+summary: 介绍linux中的普通权限相关的内容，加强自身对linux权限的理解。
 tags:
 - linux
 - ext3文件系统
@@ -71,4 +71,16 @@ hujinrun2@TYLERHU-PC0:~$ ls -al a.txt
     李一和李二一起生活在李家村，而老王是生活在王家村。如果李一有一栋房子，那么对于这栋房子来说李一就是这栋房子的所有者，老王就是其他用户。而李家村就是这栋房子的所属组，李二是和李一同一组的用户，拥有李家村这个组的权限。
 ![](https://raw.githubusercontent.com/hujinrun-github/blog_images/master/20250709015519.png)
 
-TODO
+    上图中李一、李二是用户，李家村是用户组。而老王就是其它人。李一和李二是相同用户组的用户。那么这三者直接的关系应该怎么表示呢。
+- u - 文件所有者
+- g - 所属组的用户
+- o - 其他用户
+
+基于上面的三个字符，那么通过字符设置权限可以这样处理。
+```shell
+chmod u=rwx,g=rx,o=x file_name # 直接赋予权限
+chmod u+x file_name # 给文件所有者添加执行权限
+chmod g-w file_name # 移除所属组用户的写权限
+```
+
+
