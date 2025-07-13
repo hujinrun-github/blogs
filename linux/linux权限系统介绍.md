@@ -82,5 +82,37 @@ chmod u=rwx,g=rx,o=x file_name # 直接赋予权限
 chmod u+x file_name # 给文件所有者添加执行权限
 chmod g-w file_name # 移除所属组用户的写权限
 ```
+其中`=`表示赋予权限，`+`表示添加权限，`-`表示移除权限。
 
+如果要递归地修改目录及其子目录下的所有文件的权限，可以使用 `-R` 选项。例如，`chmod -R 755 dir_name`表示将dir_name目录及其子目录下所有文件和目录的权限设置为755。
+
+## 3.3 文件的隐藏属性
+在Linux系统中，除了文件的权限之外，还有文件的隐藏属性。文件的隐藏属性是指在文件系统中不显示的属性，这些属性可以用来保护文件不被误删或修改。文件的隐藏属性可以通过 `chattr` 命令来设置和查看。
+
+`chattr` 命令的基本语法如下：
+
+```shell
+chattr [+-=] [属性] 文件名
+```
+
+其中，`+` 表示添加属性，`-` 表示移除属性，`=` 表示设置属性。属性可以是以下几种：
+- a - 只允许追加数据，不允许修改和删除文件内容，只有root用户可以设置
+- i - 禁止修改和删除文件，只有root用户可以设置
+- s - 允许文件在删除后仍然保留数据块，只有root用户可以设置
+
+例如，`chattr +i file_name` 表示将file_name文件的隐藏属性设置为禁止修改和删除文件。
+
+```shell
+# 使用lsattr可以查看用户的隐藏属性
+ubuntu@master:~$ lsattr a.txt
+--------------e------- a.txt
+#表示该文件采用extents（区段）​方式存储，这是现代文件系统的一种高效存储机制。这个属性是无法通过chattr设置或者删除的
+
+# 使用chattr命令设置隐藏属性
+ubuntu@master:~$ sudo chattr +i a.txt
+ubuntu@master:~$ lsattr a.txt
+----i---------e------- a.txt
+ubuntu@master:~$ sudo rm -rf a.txt
+rm: cannot remove 'a.txt': Operation not permitted
+```
 
